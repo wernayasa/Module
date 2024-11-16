@@ -1,3 +1,13 @@
+/* Age Verified */
+.modalAge{padding:1em;max-width:50ch;border:0;box-shadow:0 0 1em rgb(0 0 0 / 0.3);}
+.modalAge > *{margin:0 0 0.5rem 0;}
+.modalAge::backdrop{background:black;}
+.button{border:0;cursor:pointer;background:var(--gray-8);color:var(--gray-2);font-weight:700;padding:var(--size-2) var(--size-4);}
+.button:hover,.button:focus{background:var(--cyan-9);}
+.hidden{display:none;}
+.age-verified .modalAge{display:none;}
+
+
 <b:includable id='modal'>
 <dialog class='modalAge' id='modal'>
   <h2>Age Verification</h2>
@@ -5,8 +15,9 @@
   <p>Please confirm your age before proceeding.</p>
   <button class='button close-button'>I am 18+</button>
 </dialog>
-
       </b:includable>
+
+
 <b:if cond='data:view.isPost'>
 <script>/*<![CDATA[*/
   if (localStorage.getItem("ageVerified")) {
