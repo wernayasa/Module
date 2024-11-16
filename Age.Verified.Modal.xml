@@ -1,0 +1,38 @@
+<b:includable id='modal'>
+<dialog class='modalAge' id='modal'>
+  <h2>Age Verification</h2>
+  <p>You must be at least 18 years old to access this content.</p>
+  <p>Please confirm your age before proceeding.</p>
+  <button class='button close-button'>I am 18+</button>
+</dialog>
+
+      </b:includable>
+<b:if cond='data:view.isPost'>
+<script>/*<![CDATA[*/
+  if (localStorage.getItem("ageVerified")) {
+    document.documentElement.classList.add("age-verified");
+  }
+/*]]>*/</script>
+  </b:if>
+
+
+<b:include cond='data:post.labels any ( l =&gt; l.name in ["Ecchi", "Gore", "NSFW"] )' name='modal'/>
+
+<b:if cond='data:view.isPost'>
+<script>/*<![CDATA[*/
+const modal = document.querySelector("#modal");
+const closeModal = document.querySelector(".close-button");
+
+// Jika modal tidak diverifikasi, hapus kelas 'hidden' agar modal muncul
+if (!localStorage.getItem("ageVerified")) {
+  modal.classList.remove("hidden");
+  modal.showModal();
+}
+
+// Event listener untuk menutup modal dan menyimpan status ke localStorage
+closeModal.addEventListener("click", () => {
+  modal.close();
+  localStorage.setItem("ageVerified", "true");
+});
+/*]]>*/</script>
+  </b:if>
