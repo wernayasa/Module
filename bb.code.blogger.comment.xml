@@ -1,0 +1,74 @@
+Use id comments-block or comment-holder on main comment
+
+
+
+<script type='text/javascript'>
+//<![CDATA[
+function repText(id) {
+  var a = document.getElementById(id),
+      b = a.innerHTML;
+
+  // Mengganti [img]URL[/img] dengan <img src="URL">
+  b = b.replace(/\[img\](.*?)\[\/img\]/ig, "<img class='cm-image' src='$1' alt='loading...' />");
+
+  // Mengganti [URL]https://www.example.com[/URL] dengan <a href="URL" target="_blank" rel="nofollow">URL</a>
+  b = b.replace(/\[URL\](.*?)\[\/URL\]/ig, "<a href='$1' target='_blank' rel='nofollow'>$1</a>");
+
+  // Mengganti [EMAIL]example@example.com[/EMAIL] dengan <a href="mailto:example@example.com">example@example.com</a>
+  b = b.replace(/\[EMAIL\](.*?)\[\/EMAIL\]/ig, "<a href='mailto:$1'>$1</a>");
+
+  // Mengganti [spoiler]Text[/spoiler] dengan <details><summary>spoiler</summary><p>Text</p></details>
+  b = b.replace(/\[spoiler\](.*?)\[\/spoiler\]/ig, "<details><summary>spoiler</summary><p>$1</p></details>");
+
+  // Mengganti [QUOTE]Text[/QUOTE] dengan <blockquote>Text</blockquote>
+  b = b.replace(/\[QUOTE\](.*?)\[\/QUOTE\]/ig, "<blockquote>$1</blockquote>");
+
+  // Mengganti [COLOR=#0000cc]Text[/COLOR] dengan <span style="color: #0000cc">Text</span>
+  b = b.replace(/\[COLOR=([#0-9a-zA-Z]+)\](.*?)\[\/COLOR\]/ig, "<span style='color: $1'>$2</span>");
+
+  // Mengganti [SIZE=26px]Text[/SIZE] dengan <span style="font-size: 26px">Text</span>
+  b = b.replace(/\[SIZE=([0-9]+px)\](.*?)\[\/SIZE\]/ig, "<span style='font-size: $1'>$2</span>");
+
+  // Mengganti [B]bold[/B] dengan <strong>bold</strong>
+  b = b.replace(/\[B\](.*?)\[\/B\]/ig, "<strong>$1</strong>");
+
+  // Mengganti [I]italic[/I] dengan <em>italic</em>
+  b = b.replace(/\[I\](.*?)\[\/I\]/ig, "<em>$1</em>");
+
+  // Mengganti [U]underlined[/U] dengan <u>underlined</u>
+  b = b.replace(/\[U\](.*?)\[\/U\]/ig, "<u>$1</u>");
+
+  // Mengganti [S]struck-through[/S] dengan <s>struck-through</s>
+  b = b.replace(/\[S\](.*?)\[\/S\]/ig, "<s>$1</s>");
+
+  // Mengganti [HEADING=1] menjadi <h2>, [HEADING=2] menjadi <h3>, [HEADING=3] menjadi <h4>
+  b = b.replace(/\[HEADING=1\](.*?)\[\/HEADING\]/ig, "<h2>$1</h2>");
+  b = b.replace(/\[HEADING=2\](.*?)\[\/HEADING\]/ig, "<h3>$1</h3>");
+  b = b.replace(/\[HEADING=3\](.*?)\[\/HEADING\]/ig, "<h4>$1</h4>");
+
+  // Mengganti [LIST]...[/LIST] dengan <ul><li>...</li></ul>
+  b = b.replace(/\[LIST\](.*?)\[\/LIST\]/gis, function(match, content) {
+    return "<ul>" + content.replace(/\[\*\]\s*(.*?)($|\n)/g, "<li>$1</li>") + "</ul>";
+  });
+
+  // Mengganti [LIST=1]...[/LIST] dengan <ol><li>...</li></ol>
+  b = b.replace(/\[LIST=1\](.*?)\[\/LIST\]/gis, function(match, content) {
+    return "<ol>" + content.replace(/\[\*\]\s*(.*?)($|\n)/g, "<li>$1</li>") + "</ol>";
+  });
+
+  // Mengganti [table]...[/table] menjadi <table>...<tr><td>...</td></tr>...</table>
+  b = b.replace(/\[table\](.*?)\[\/table\]/gis, function(match, content) {
+    return "<table>" + content.replace(/\[tr\](.*?)\[\/tr\]/gis, function(matchTr, contentTr) {
+      return "<tr>" + contentTr.replace(/\[td\](.*?)\[\/td\]/gis, "<td>$1</td>") + "</tr>";
+    }) + "</table>";
+  });
+
+  // Memperbarui elemen HTML dengan hasil yang telah diubah
+  document.getElementById(id).innerHTML = b;
+}
+
+// Menjalankan fungsi pada elemen dengan id 'comment-holder'
+document.querySelectorAll('#comment-holder, #comments-block').forEach(element => {
+  repText(element.id);
+});
+</script>
